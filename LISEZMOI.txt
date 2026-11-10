@@ -1,0 +1,19 @@
+EXPOSITION
+
+- Ouvrez index.html, cliquez sur un mur.
+- À gauche : les photos de ce mur. Glissez-les sur le mur.
+  Pour retirer une photo : glissez-la du mur vers la colonne (ou touche Suppr).
+  Carré jaune (coin) = taille. Rond jaune (au-dessus) = pivot : glissez à
+  gauche/droite pour mettre la photo en perspective ; double-clic = remettre droit.
+- "Ajouter des photos" : prend des photos de l'ordinateur.
+- Au centre de la barre du haut : zone de remarques propre à chaque mur.
+- En haut : Aide, Exporter PDF (un mur par page), Exporter pour GitHub.
+- Tout est sauvegardé automatiquement dans le navigateur.
+
+Responsable : photos des murs dans murs/, photos de l'expo dans
+photos/, liste de départ dans expo-config.js.
+
+PUBLIER SUR GITHUB
+1. Cliquez sur "Exporter pour GitHub" : le navigateur télécharge expo-selection.js.
+2. Remplacez expo-selection.js du dossier du site par ce fichier (même nom).
+3. Envoyez-le sur GitHub. Aucun copier-coller.

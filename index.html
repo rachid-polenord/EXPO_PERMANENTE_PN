@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exposition</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="grow"><h1 id="t"></h1></div><div class="tools" id="tl"></div></header>
+<main class="grid" id="g"></main>
+<script src="expo-config.js"></script>
+<script src="expo-selection.js"></script>
+<script src="expo-data.js"></script>
+<script>
+Expo.ready.then(function(D){
+  document.title=D.titre;
+  document.getElementById('t').textContent=D.titre;
+  Expo.mountTools(document.getElementById('tl'));
+  var g=document.getElementById('g');
+  D.murs.forEach(function(m){
+    var a=document.createElement('a');a.className='card';a.href='mur.html?id='+encodeURIComponent(m.id);
+    var th=document.createElement('div');th.className='th';
+    var im=new Image();im.alt='';im.loading='lazy';im.src=m.image;
+    im.onerror=function(){im.remove();th.textContent='Photo du mur à ajouter';};
+    th.appendChild(im);
+    var n=m.photos.filter(function(p){return p.x!=null&&p.y!=null;}).length;
+    var inn=document.createElement('div');inn.className='in';
+    inn.innerHTML='<strong></strong><span></span>';
+    inn.firstChild.textContent=m.nom;
+    inn.lastChild.textContent=n+(n>1?' photos':' photo');
+    a.appendChild(th);a.appendChild(inn);g.appendChild(a);
+  });
+});
+</script>
+</body>
+</html>

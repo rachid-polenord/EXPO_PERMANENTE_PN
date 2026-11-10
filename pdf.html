@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Exposition – PDF</title>
+<style>
+@page{size:A4 landscape;margin:10mm}
+*{box-sizing:border-box}
+body{margin:0;font:12px/1.4 system-ui,sans-serif;color:#222;background:#fff}
+.bar{padding:10px 16px;background:#eee;display:flex;gap:12px;align-items:center}
+.bar button{font:inherit;padding:6px 14px;cursor:pointer}
+.page{padding:12px 16px;break-after:page;page-break-after:always}
+.page:last-child{break-after:auto;page-break-after:auto}
+h1{font:400 30px Georgia,serif;margin:60px 0 6px}
+h2{font:400 18px Georgia,serif;margin:0 0 4px}
+.rem{margin:0 0 8px;color:#444;white-space:pre-wrap}
+.stage{position:relative;margin:8px auto 0;width:min(100%,calc(150mm*var(--asp,2)));background:#ddd}
+.stage img.w{display:block;width:100%}
+.ph{position:absolute;border:2px solid #fff;outline:1px solid #888;background:#f0f0f0}
+.ph img{display:block;width:100%}
+.ph img.fill{height:100%;object-fit:cover}
+@media print{.bar{display:none}}
+</style>
+</head>
+<body>
+<div class="bar"><button onclick="print()">Enregistrer en PDF / Imprimer</button><span>Dans la fenêtre d'impression, choisissez « Enregistrer au format PDF ».</span></div>
+<div id="out"></div>
+<script src="expo-config.js"></script>
+<script src="expo-selection.js"></script>
+<script src="expo-data.js"></script>
+<script>
+Expo.ready.then(function(D){
+  var out=document.getElementById('out'),jobs=[];
+  function pl(p){return p.x!=null&&p.y!=null;}
+  var total=D.murs.reduce(function(n,m){return n+m.photos.filter(pl).length;},0);
+  var cv=document.createElement('section');cv.className='page';
+  cv.innerHTML='<h1></h1><p></p>';cv.querySelector('h1').textContent=D.titre;
+  cv.querySelector('p').textContent=D.murs.length+' murs, '+total+' photos placées. Document du '+new Date().toLocaleDateString('fr-BE')+'.';
+  out.appendChild(cv);
+  D.murs.forEach(function(m){
+    var s=document.createElement('section');s.className='page';
+    var h=document.createElement('h2');h.textContent=m.nom;s.appendChild(h);
+    if(m.commentaire){var c=document.createElement('p');c.className='rem';c.textContent=m.commentaire;s.appendChild(c);}
+    var st=document.createElement('div');st.className='stage';s.appendChild(st);
+    var wi=new Image();wi.className='w';
+    jobs.push(new Promise(function(res){wi.onload=function(){st.style.setProperty('--asp',wi.naturalWidth/wi.naturalHeight);res();};
+      wi.onerror=function(){st.style.height='100mm';st.textContent='Photo du mur manquante';res();};wi.src=m.image;}));
+    st.appendChild(wi);
+    m.photos.filter(pl).forEach(function(p){
+      var b=document.createElement('div');b.className='ph';b.style.left=p.x+'%';b.style.top=p.y+'%';b.style.width=(p.largeur||12)+'%';
+      if(p.pivot)b.style.transform='perspective(700px) rotateY('+p.pivot+'deg)';
+      var im=new Image();if(p.ratio){b.style.aspectRatio=p.ratio;im.className='fill';}
+      jobs.push(new Promise(function(res){im.onload=res;im.onerror=function(){im.remove();b.style.aspectRatio=1.5;res();};im.src=p.fichier;}));
+      b.appendChild(im);st.appendChild(b);
+    });
+    out.appendChild(s);
+  });
+  if(location.search.indexOf('print')>-1)Promise.all(jobs).then(function(){setTimeout(function(){print();},300);});
+});
+</script>
+</body>
+</html>

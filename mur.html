@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mur</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="btn" href="index.html">Tous les murs</a>
+  <a class="btn" id="prev">Précédent</a>
+  <span class="count" id="pos"></span>
+  <a class="btn" id="next">Suivant</a>
+  <div class="grow"><input id="rem" class="rem" type="text" placeholder="Remarques sur ce mur…" aria-label="Remarques sur ce mur"></div>
+  <div class="tools" id="tl"></div>
+</header>
+<div class="work">
+  <aside class="col" id="col">
+    <h2 id="nom"></h2>
+    <p class="note" id="sub"></p>
+    <div id="list"></div>
+    <label class="btn full">Ajouter des photos<input type="file" id="add" accept="image/*" multiple hidden></label>
+  </aside>
+  <main class="stagewrap">
+    <div class="stage" id="stage"><div class="layer" id="layer"></div></div>
+  </main>
+</div>
+<script src="expo-config.js"></script>
+<script src="expo-selection.js"></script>
+<script src="expo-data.js"></script>
+<script src="expo.js"></script>
+</body>
+</html>
